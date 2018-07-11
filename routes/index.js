@@ -2,20 +2,15 @@ var express = require('express');
 var router = express.Router();
 const sqlite = require('sqlite3').verbose();
 const models = require('../models');
+const Sequelize = require('sequelize');
+const Op = Sequelize.Op;
 
 /* GET home page. */
-router.get('/artists/:id', function(req, res, next) {
-  let artistId = parseInt(req.params.id);
-  models.artists
-    .find({
-      where: {
-        ArtistId: artistId
-      }
-    })
-    .then(artist => {
-      res.render('specificArtist', {
-        artist: artist
-      });
+router.get('/artists', function(req, res, next) {
+  models.artists.findAll({}).then(artistsFound => {
+    res.render('artists', {
+      artists: artistsFound
     });
+  });
 });
 module.exports = router;
